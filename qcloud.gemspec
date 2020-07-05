@@ -2,7 +2,7 @@
 #$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name        = 'qcloud_api'
+  spec.name        = 'qcloud'
   spec.version     = '0.0.1'
   spec.date        = '2020-07-06'
   spec.summary     = 'template!'
