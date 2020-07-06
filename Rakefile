@@ -8,4 +8,4 @@ end
 
 task :default => :test
 
-#rake test TEST=test/test_mygem.rb
+#rake test TEST=test/test_qcloud_cos.rb

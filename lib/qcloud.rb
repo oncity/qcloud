@@ -1,10 +1,12 @@
 require 'json'
 require 'digest'
 require 'rest-client'
+require 'aws-sdk-s3'
 
 require_relative 'qcloud/sms'
 require_relative 'qcloud/voice'
 require_relative 'qcloud/sts'
+require_relative 'qcloud/cos'
 
 module Qcloud
 
