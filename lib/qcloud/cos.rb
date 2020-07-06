@@ -2,10 +2,11 @@ module Qcloud
   module Cos
     # https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/welcome.html
     class Configuration
-      attr_accessor :region, :bucket
+      attr_accessor :region, :bucket, :uid
       def initialize
         @region = ''
         @bucket = ''
+        @uid = ''
       end
     end
 
@@ -53,22 +54,25 @@ module Qcloud
       def get_object(name,bucket_name=nil)
         obj = get_bucket_object(name, bucket_name)
         obj.exists? ? obj : nil
-=begin
-bucket.objects.each do |obj|
-  puts "#{obj.key} => #{obj.etag}"
-end
+      end
 
-# batch operations, delete objects in batches of 1k
-bucket.objects(prefix: '/tmp-files/').delete
+      def sts_key(bucket,allow_actions,allow_prefixs)
 
-# single object operations
-obj = bucket.object('hello')
+        resource = allow_prefixs.map do |p|
+          "qcs::cos:#{configuration.region}:uid/#{configuration.uid}:#{bucket}#{p}"
+        end
 
-
-obj.put(body:'Hello World!')
-obj.etag
-obj.delete
-=end
+        policy = {
+          'version': '2.0',
+          'statement': [
+            {
+              'action': allow_actions,
+              'effect': 'allow',
+              'resource': resource
+            }
+          ]
+        }
+        Qcloud::Sts::GetFederationToken('cos-sts-key',policy, 7200 )
       end
 
     end

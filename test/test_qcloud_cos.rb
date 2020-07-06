@@ -6,6 +6,7 @@ class QcloudTest < Minitest::Test
     Qcloud::Cos.configure do |config|
       config.region = 'ap-beijing'
       config.bucket = 'content-1251050460'
+      config.uid = '1251050460'
     end
   end
 
@@ -25,6 +26,16 @@ class QcloudTest < Minitest::Test
     Qcloud::Cos.delete_object(fn)
 
     assert_equal Qcloud::Cos.exists_object?(fn) , false
+
+    bucket = 'content-1251050460'
+    allow_actions = [
+      "name/cos:PutObject"
+    ]
+    allow_prefixs = [
+      "/sysop","/img"
+    ]
+
+    p Qcloud::Cos.sts_key(bucket,allow_actions,allow_prefixs)
 
   end
 
