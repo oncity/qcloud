@@ -2,7 +2,19 @@ module Qcloud
   module Sms
 
     class << self
+
+      def SmsPackagesStatistics
+        # 套餐包信息统计
+        params = {
+          SmsSdkAppid: '1400019320',
+          Limit: 10,
+          Offset: 0
+        }
+        send_api('SmsPackagesStatistics', params)
+      end
+
       def DescribeSmsSignList 
+        # 短信签名状态查询
         params = {
           International: 0,
           'SignIdSet': [2174]
@@ -11,6 +23,7 @@ module Qcloud
       end
 
       def SendSms
+        # 发短信
         params = {
           PhoneNumberSet: ['+8613702512929'],
           TemplateID: '5604',
