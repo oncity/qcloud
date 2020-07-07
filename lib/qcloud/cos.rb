@@ -59,7 +59,7 @@ module Qcloud
       def sts_key(bucket,allow_actions,allow_prefixs)
 
         resource = allow_prefixs.map do |p|
-          "qcs::cos:#{configuration.region}:uid/#{configuration.uid}:#{bucket}#{p}"
+          "qcs::cos:#{configuration.region}:uid/#{configuration.uid}:#{bucket}/#{p}"
         end
 
         policy = {
