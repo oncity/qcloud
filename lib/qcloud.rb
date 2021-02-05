@@ -72,7 +72,7 @@ module Qcloud
       secret_date = sign('TC3' + configuration.app_key, date)
       secret_service = sign(secret_date, data[:service])
       secret_signing = sign(secret_service, 'tc3_request')
-      signature =  Digest.hexencode( OpenSSL::HMAC.digest( OpenSSL::Digest.new('sha256') , secret_signing , string_to_sign ) )
+      signature = Digest.hexencode( OpenSSL::HMAC.digest( OpenSSL::Digest.new('sha256') , secret_signing , string_to_sign ) )
 
       p signature if debug
 
@@ -90,7 +90,7 @@ module Qcloud
         'X-TC-Version': data[:version],
         'X-TC-Region': configuration.region,
         'Content-Type': 'application/json',
-        'X-TC-Language': 'zh-CN',
+        'X-TC-Language': 'zh-CN'
       })
 
       JSON.parse(data, symbolize_names: true)

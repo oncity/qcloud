@@ -1,19 +1,36 @@
 module Qcloud
   module Sms
+    class Configuration
+      attr_accessor :appid, :appkey, :sign
+      def initialize
+        @appid = ''
+        @appkey = ''
+        @sign = ''
+      end
+    end
 
     class << self
+      attr_writer :configuration
+      def configuration
+        @configuration ||= Configuration.new
+      end
 
-      def SmsPackagesStatistics
+      def configure
+        yield(configuration)
+      end
+
+      def packages_statistics
         # 套餐包信息统计
         params = {
-          SmsSdkAppid: '1400019320',
+          SmsSdkAppid: configuration.appid,
           Limit: 10,
           Offset: 0
         }
+        p params
         send_api('SmsPackagesStatistics', params)
       end
 
-      def DescribeSmsSignList 
+      def describe_smssignlist
         # 短信签名状态查询
         params = {
           International: 0,
@@ -22,18 +39,13 @@ module Qcloud
         send_api('DescribeSmsSignList', params)
       end
 
-      def SendSms
-        # 发短信
-        params = {
-          PhoneNumberSet: ['+8613702512929'],
-          TemplateID: '5604',
-          SmsSdkAppid: '1400019320',
-          Sign: '奥视网络',
-          'TemplateParamSet': [
-            '1234'
-          ]
-        }
-        send_api('SendSms', params)
+      def send_sms(mobile, params)
+        send_api('SendSms',
+                 params.merge({
+                                SmsSdkAppid: configuration.appid,
+                                PhoneNumberSet: ["+86#{mobile}"],
+                                Sign: configuration.sign
+                              }))
       end
 
       def send_api(action, params)
@@ -42,7 +54,7 @@ module Qcloud
           params: params,
           service: 'sms',
           host: 'sms.tencentcloudapi.com',
-          version: '2019-07-11',
+          version: '2019-07-11'
         )
       end
     end
